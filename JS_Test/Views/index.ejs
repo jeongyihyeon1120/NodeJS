@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+   </head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+	$(() => {
+	    const socket = io('http://localhost:8080');	
+		socket.on('reqMsg', (id, status) => {
+			console.log(id);
+			console.log(status);
+			document.write("<table>");
+			document.write("<th>");
+			document.write("ID");
+			document.write("</th>");
+			document.write("<th>");
+			document.write("Status");
+			document.write("</th>");
+			document.write("<tr>");
+			document.write("<td>");
+			document.write("<font color=green size=4>" + id + "</font>");
+			document.write("</td>");
+			document.write("<td>");
+			document.write("<font color=green size=4>" + status + "</font>");
+			document.write("</td>");
+			document.write("<tr>")
+			document.write("</table>");
+		});
+	});
+</script>
+</body>
+</html>
