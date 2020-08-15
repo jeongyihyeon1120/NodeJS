@@ -4,7 +4,11 @@
 var express = require('express');
 var app = express();
 var io = require('socket.io').listen(8080);
-io.set('heartbeat timeout', 600000);
+
+var amqp = require('amqp');
+var connection = amqp.createConnection({
+	host : 'localhost'
+});
 
 
 var information;
@@ -26,6 +30,18 @@ app.get('/', (req, res) => {
 
 var server = app.listen(10001, function(){
 	console.log("Start ...")
+});
+
+var queueToReceiveFrom = "hello";
+connection.on('ready', function() {
+	connection.queue(queueToReceiveFrom, {
+		autoDelete : false
+	}, function(queue) {
+		console.log('Waiting messages...');
+		queue.subscribe(function(messageReceived) {
+		console.log("Received message: " + messageReceived.data.toString());
+		});
+	});
 });
 
 
