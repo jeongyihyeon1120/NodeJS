@@ -11,7 +11,8 @@ var connection = amqp.createConnection({
 });
 
 var id;
-var status
+var status;
+var check;
 
 app.set('views', __dirname + '/views');
 
@@ -38,9 +39,11 @@ connection.on('ready', function() {
 		var strArray = messageReceived.data.toString().split('/');
 		id = strArray[0];
 		status = strArray[1];
+		check = strArray[2];
 		console.log(id);
 		console.log(status);
-		io.sockets.emit('reqMsg', id, status);
+		console.log(check);
+		io.sockets.emit('reqMsg', id, status, check);
 		});
 	});
 });

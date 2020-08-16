@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html>
-   <head>
-   <style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+<head>
+<style>
+   .check {
+	  background-color: Navy;
+	  color: white;
+	  border: 2px solid black;
+	  margin: 20px;
+	  padding: 20px;
+	}
+   	table {
+   	  width:100%;
+	}
+	table, th, td {
+  	  border: 1px solid black;
+  	  border-collapse: collapse;
+	}
+	th, td {
+  	  padding: 15px;
+  	  text-align: center;
+	}
+	#detectGame tr:nth-child(even) {
+  	  background-color: #eee;
+	}
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+	#detectGame tr:nth-child(odd) {
+ 	  background-color: #fff;
+	}
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
+	#detectGame th {
+  	  background-color: black;
+  	  color: white;
+	}
 </style>
    </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
@@ -24,29 +39,47 @@ tr:nth-child(even) {
 <script type="text/javascript"
 src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script>
+	var idArr = new Array();
 	function deleteLine(obj) {
     	var tr = $(obj).parent().parent();
     	tr.remove();
 	}
 	$(() => {
 	    const socket = io('http://localhost:8080');	
-			socket.on('reqMsg', (id, status) => {
+			socket.on('reqMsg', (id, status, check) => {
 				$(function(){
-       		 		$(".id").text(id);
-       		 		$(".status").text(status);
+					var row = $('#detectGame tbody tr').length;
+					if(status == "Yes"){
+						if(!idArr.includes(id)) {
+							idArr[row] = id;
+							$(".checking").text(check);
+							$('#detectGame > tbody:last').append('<tr><td class="id">' + id + '</td><td class="status">' + status + '</td></tr>')
+						} else {
+							$(".checking").text(check);
+						}
+					} else {
+						if(idArr.includes(id)) {
+							$('#detectGame tbody tr').remove();
+							idArr.splice(idArr.indexOf(id));
+						}
+					}
     			});
 		});
 	});
 </script>
 <body>
-	<table>
-      <tr>
-         <th> id </th>
-         <th> status </th>
-      </tr>
-      <tr>
-    	<td class="id"></td>
-    	<td class="status"></td>
-  	  </tr>   
+	<div class="check">
+		<h2> Not Connection </h2>
+		<p class="checking"></p>
+	</div>
+	<table id="detectGame">
+	  <thead>	
+        <tr>
+           <th> 학번 </th>
+           <th> 상태 </th>
+        </tr>
+      </thead>
+      <tbody>
+  	  </tbody>   
 </body>
 </html>
