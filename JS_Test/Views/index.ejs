@@ -45,7 +45,7 @@ src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
     	tr.remove();
 	}
 	$(() => {
-	    const socket = io('http://localhost:8080');	
+	    const socket = io('http://localhost:30002');	
 			socket.on('reqMsg', (id, status, check) => {
 				$(function(){
 					var row = $('#detectGame tbody tr').length;

@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var app = express();
-var io = require('socket.io').listen(8080);
+var io = require('socket.io').listen(30002);
 
 var amqp = require('amqp');
 var connection = amqp.createConnection({
